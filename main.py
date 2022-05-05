@@ -30,10 +30,10 @@ def recupera_indice_faturas_amortizado(mensalidades, target):
         if amount_due >= value:
             result.append(index)
             index += 1
-            for index2, value2 in enumerate(potential_values[index:], start=index):
-                if amount_due - value2 == 0:
-                    result.append(index2)
-                    return result
+            index2 = bisect_right(potential_values, amount_due, lo=index) - 1
+            if amount_due - potential_values[index2] == 0:
+                result.append(index2)
+                return result
             result = []
 
     return result

@@ -1,6 +1,6 @@
 import unittest
 
-from isaac.main import recupera_indice_faturas, recupera_indice_faturas_amortizado
+from mensalidades.main import recupera_indice_faturas, recupera_indice_faturas_amortizado
 
 
 class MyTestCase(unittest.TestCase):

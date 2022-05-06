@@ -17,23 +17,22 @@ def recupera_indice_faturas(mensalidades, target):
 
 def recupera_indice_faturas_amortizado(mensalidades, target):
     if len(mensalidades) == 2:
-        return [0, 1] if sum(mensalidades) == target else [None, None]
+        return (0, 1) if sum(mensalidades) == target else (None, None)
 
-    potential_values = sorted(mensalidades)
-    index_cut = bisect_right(potential_values, target)
-    potential_values = potential_values[:index_cut] if index_cut < len(potential_values) else potential_values
+    mensalidades_dict = {}
+    for index, mensalidade in enumerate(mensalidades, start=0):
+        value = mensalidades_dict.get(mensalidade, [])
+        value.append(index)
+        mensalidades_dict.update({mensalidade: value})
 
-    result = []
-    index = 0
-    for value in potential_values:
+    for value in mensalidades_dict.keys():
         amount_due = target - value
-        if amount_due >= value:
-            result.append(index)
-            index += 1
-            index2 = bisect_right(potential_values, amount_due, lo=index) - 1
-            if amount_due - potential_values[index2] == 0:
-                result.append(index2)
-                return result
-            result = []
-
-    return result
+        if amount_due > value:
+            index = mensalidades_dict.get(value)[0]
+            if mensalidades_dict.get(amount_due):
+                index2 = mensalidades_dict.get(amount_due)[0]
+                return index, index2
+        elif amount_due == value:
+            index, index2 = mensalidades_dict.get(value)[:2]
+            return index, index2
+    return None, None

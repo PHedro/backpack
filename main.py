@@ -27,13 +27,13 @@ def recupera_indice_faturas_amortizado(mensalidades, target):
 
     for value in mensalidades_dict.keys():
         amount_due = target - value
-        if amount_due > value:
+        if amount_due == value:
+            if len(mensalidades_dict.get(value)) >= 2:
+                index, index2 = mensalidades_dict.get(value)[:2]
+                return index, index2
+        else:
             index = mensalidades_dict.get(value)[0]
             if mensalidades_dict.get(amount_due):
                 index2 = mensalidades_dict.get(amount_due)[0]
-                return index, index2
-        elif amount_due == value:
-            if len(mensalidades_dict.get(value)) >= 2:
-                index, index2 = mensalidades_dict.get(value)[:2]
                 return index, index2
     return None, None
